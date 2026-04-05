@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New Orleans · May 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black:#080706;--deep:#100d0a;--card:#181310;--card2:#1e1812;--border:#2e2418;--border2:#3d3020;
+  --gold:#c8a84a;--gold-l:#e4c97a;--gold-d:#6e5828;--cream:#ede5d4;--cream-d:#a89878;
+  --red:#7a1818;--red-l:#b03030;--green:#1a4a2a;--green-l:#3a8a5a;--muted:#5a4e3a;--blue-l:#4a7ab0;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--black);color:var(--cream);font-family:'Lora',Georgia,serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse 100% 50% at 50% -10%,rgba(120,20,20,0.07) 0%,transparent 60%),radial-gradient(ellipse 50% 80% at 0% 50%,rgba(200,168,74,0.04) 0%,transparent 50%);pointer-events:none;z-index:0;}
+.wrap{max-width:800px;margin:0 auto;padding:0 18px 80px;position:relative;z-index:1;}
+
+header{text-align:center;padding:52px 0 30px;}
+.eyebrow{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.45em;color:var(--gold-d);text-transform:uppercase;margin-bottom:18px;animation:up 0.9s ease both 0.1s;}
+h1{font-family:'Cinzel Decorative',serif;font-size:clamp(1.9rem,7vw,3.2rem);color:var(--gold);text-shadow:0 0 50px rgba(200,168,74,0.25);line-height:1.15;animation:up 0.9s ease both 0.25s;margin-bottom:10px;}
+.sub{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.28em;color:var(--cream-d);text-transform:uppercase;animation:up 0.9s ease both 0.4s;margin-bottom:28px;}
+.rule{display:flex;align-items:center;justify-content:center;gap:14px;animation:up 0.9s ease both 0.5s;}
+.rule-line{width:70px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-d));}
+.rule-line.r{background:linear-gradient(90deg,var(--gold-d),transparent);}
+.rule-sym{color:var(--gold);font-size:1rem;}
+
+.prog-wrap{background:var(--deep);border:1px solid var(--border);border-radius:3px;padding:14px 18px;margin:22px 0 30px;animation:up 0.9s ease both 0.6s;}
+.prog-label{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.25em;color:var(--gold-d);text-transform:uppercase;margin-bottom:8px;display:flex;justify-content:space-between;}
+.prog-track{background:var(--border);height:4px;border-radius:2px;overflow:hidden;}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold-d),var(--gold));border-radius:2px;transition:width 0.4s ease;width:0%;}
+
+.tabs{display:flex;gap:3px;margin-bottom:28px;border-bottom:1px solid var(--border);animation:up 0.9s ease both 0.65s;overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{font-family:'Cinzel',serif;font-size:0.57rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--muted);padding:10px 11px;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 0.2s;background:none;border-top:none;border-left:none;border-right:none;}
+.tab:hover{color:var(--cream-d);}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold);}
+
+.panel{display:none;}
+.panel.active{display:block;animation:up 0.4s ease both;}
+
+.day-hdr{display:flex;align-items:baseline;gap:14px;margin-bottom:18px;}
+.day-num{font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.3em;color:var(--gold-d);text-transform:uppercase;white-space:nowrap;}
+.day-name{font-family:'Cinzel',serif;font-size:0.95rem;color:var(--gold-l);letter-spacing:0.06em;}
+.day-rule{flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent);}
+
+.check-item{display:flex;gap:12px;align-items:flex-start;margin-bottom:8px;cursor:pointer;}
+.check-item input[type="checkbox"]{display:none;}
+.check-box{width:18px;height:18px;border:1.5px solid var(--border2);border-radius:2px;flex-shrink:0;margin-top:3px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;background:var(--deep);}
+.check-item:hover .check-box{border-color:var(--gold-d);}
+.check-item input:checked~.check-box{background:var(--green);border-color:var(--green-l);}
+.check-item input:checked~.check-box::after{content:'✓';color:var(--green-l);font-size:0.7rem;font-family:sans-serif;}
+.check-content{flex:1;}
+.check-item input:checked~.check-content .check-title{opacity:0.4;text-decoration:line-through;text-decoration-color:var(--muted);}
+.check-item input:checked~.check-content .check-desc{opacity:0.35;}
+.check-time{font-family:'Cinzel',serif;font-size:0.56rem;color:var(--gold-d);letter-spacing:0.1em;margin-bottom:2px;}
+.check-title{font-family:'Cinzel',serif;font-size:0.82rem;color:var(--cream);letter-spacing:0.05em;margin-bottom:4px;display:flex;align-items:center;gap:7px;flex-wrap:wrap;transition:opacity 0.2s;}
+.check-desc{font-size:0.78rem;color:var(--cream-d);line-height:1.65;transition:opacity 0.2s;}
+
+.card{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:3px;padding:13px 15px;margin-bottom:8px;transition:border-color 0.25s;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--border2);transition:background 0.25s;}
+.card:hover{border-color:var(--border2);}
+.card:hover::before{background:var(--gold-d);}
+.card.confirmed{border-color:rgba(200,168,74,0.35);}
+.card.confirmed::before{background:var(--gold);}
+.card.spooky{border-color:rgba(122,24,24,0.45);background:linear-gradient(135deg,rgba(122,24,24,0.1),var(--card));}
+.card.spooky::before{background:var(--red-l);}
+.card.loose{border-style:dashed;border-color:var(--border);}
+.card.loose::before{background:var(--border2);}
+
+.badge{font-family:'Cinzel',serif;font-size:0.47rem;letter-spacing:0.14em;text-transform:uppercase;padding:2px 6px;border-radius:2px;font-weight:700;}
+.b-confirmed{background:rgba(200,168,74,0.15);border:1px solid var(--gold-d);color:var(--gold);}
+.b-book{background:rgba(176,48,48,0.2);border:1px solid var(--red-l);color:#d07070;}
+.b-loose{background:rgba(255,255,255,0.05);border:1px solid var(--border2);color:var(--muted);}
+.b-cash{background:rgba(26,74,42,0.25);border:1px solid #3a6a4a;color:#80c090;}
+.b-card{background:rgba(26,42,74,0.35);border:1px solid var(--blue-l);color:#80a8d0;}
+.b-free{background:rgba(74,26,74,0.25);border:1px solid #8a408a;color:#c080c0;}
+
+/* CONTACT INFO BLOCK */
+.contact{margin-top:7px;padding:8px 10px;background:rgba(0,0,0,0.2);border-left:2px solid var(--gold-d);border-radius:0 2px 2px 0;}
+.contact-row{font-size:0.7rem;color:var(--cream-d);line-height:1.8;display:flex;gap:6px;flex-wrap:wrap;}
+.contact-row span{color:var(--gold-d);font-family:'Cinzel',serif;font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;}
+
+.sec{font-family:'Cinzel',serif;font-size:0.6rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold-d);margin:24px 0 12px;display:flex;align-items:center;gap:10px;}
+.sec::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--border2),transparent);}
+
+.resto{background:linear-gradient(135deg,var(--card2),var(--card));border:1px solid var(--border);border-radius:3px;padding:15px 17px;margin-bottom:12px;}
+.resto-name{font-family:'Cinzel',serif;font-size:0.88rem;color:var(--gold-l);margin-bottom:3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.resto-pay{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:6px;}
+.resto-desc{font-size:0.78rem;color:var(--cream-d);line-height:1.65;margin-bottom:8px;}
+.menu-items{border-top:1px solid var(--border);padding-top:9px;margin-top:4px;}
+.menu-label{font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:0.25em;color:var(--gold-d);text-transform:uppercase;margin-bottom:7px;}
+.menu-item{display:flex;gap:8px;margin-bottom:5px;font-size:0.77rem;line-height:1.5;}
+.menu-item::before{content:'◆';color:var(--gold-d);font-size:0.42rem;margin-top:4px;flex-shrink:0;}
+.menu-item strong{color:var(--cream);}
+.menu-item span{color:var(--cream-d);}
+
+.attract{background:linear-gradient(135deg,var(--card),var(--card2));border:1px solid var(--border);border-radius:3px;padding:13px 16px;margin-bottom:9px;}
+.attract-name{font-family:'Cinzel',serif;font-size:0.85rem;color:var(--cream);margin-bottom:3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.attract-sub{font-size:0.68rem;color:var(--muted);font-family:'Cinzel',serif;letter-spacing:0.05em;margin-bottom:5px;}
+.attract-desc{font-size:0.77rem;color:var(--cream-d);line-height:1.65;margin-bottom:6px;}
+
+.tip{display:flex;gap:12px;align-items:flex-start;padding:11px 14px;background:rgba(26,74,42,0.12);border:1px solid rgba(58,138,90,0.2);border-radius:3px;margin-bottom:8px;font-size:0.78rem;color:var(--cream-d);line-height:1.6;}
+.tip-i{font-size:0.9rem;flex-shrink:0;margin-top:1px;}
+.tip strong{color:var(--cream);}
+
+.tip-table{width:100%;border-collapse:collapse;margin-bottom:14px;font-size:0.77rem;}
+.tip-table th{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold-d);border-bottom:1px solid var(--border2);padding:8px 10px;text-align:left;}
+.tip-table td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--cream-d);vertical-align:top;line-height:1.5;}
+.tip-table td:first-child{color:var(--cream);font-family:'Cinzel',serif;font-size:0.75rem;white-space:nowrap;}
+.tip-table tr:last-child td{border-bottom:none;}
+
+.causeway-box{background:linear-gradient(135deg,rgba(200,168,74,0.06),var(--card));border:1px solid rgba(200,168,74,0.2);border-radius:3px;padding:16px 18px;margin-bottom:12px;}
+.causeway-title{font-family:'Cinzel',serif;font-size:0.88rem;color:var(--gold-l);margin-bottom:6px;}
+.causeway-desc{font-size:0.78rem;color:var(--cream-d);line-height:1.7;margin-bottom:12px;}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.fact{background:var(--deep);border:1px solid var(--border);border-radius:2px;padding:8px 10px;}
+.fact-l{font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:0.2em;color:var(--gold-d);text-transform:uppercase;margin-bottom:2px;}
+.fact-v{font-size:0.78rem;color:var(--cream);}
+
+.loose-note{background:rgba(255,255,255,0.03);border:1px dashed var(--border2);border-radius:3px;padding:10px 14px;font-size:0.76rem;color:var(--muted);font-style:italic;text-align:center;margin-bottom:14px;}
+
+.pay-legend{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;padding:12px 14px;background:var(--deep);border:1px solid var(--border);border-radius:3px;}
+.pay-legend-title{font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:0.2em;color:var(--gold-d);text-transform:uppercase;width:100%;margin-bottom:4px;}
+
+@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--black);}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+@media(max-width:500px){.facts{grid-template-columns:1fr}.tab{font-size:0.52rem;padding:9px 8px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">✦ &nbsp; A Birthday in the Crescent City &nbsp; ✦</div>
+  <h1>New Orleans</h1>
+  <div class="sub">May 20 – 23, 2026 &nbsp;·&nbsp; Brandi & Toby</div>
+  <div class="rule"><div class="rule-line"></div><div class="rule-sym">⚜</div><div class="rule-line r"></div></div>
+</header>
+
+<div class="prog-wrap">
+  <div class="prog-label"><span>Trip Progress</span><span id="prog-count">0 of 0 checked</span></div>
+  <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+</div>
+
+<div class="tabs">
+  <button class="tab active" onclick="showTab('wed',this)">Wed 20</button>
+  <button class="tab" onclick="showTab('thu',this)">Thu 21 ✦</button>
+  <button class="tab" onclick="showTab('fri',this)">Fri 22</button>
+  <button class="tab" onclick="showTab('sat',this)">Sat 23</button>
+  <button class="tab" onclick="showTab('eat',this)">Food</button>
+  <button class="tab" onclick="showTab('see',this)">Things to Do</button>
+  <button class="tab" onclick="showTab('tips',this)">Tips & $</button>
+</div>
+
+<!-- WEDNESDAY -->
+<div class="panel active" id="panel-wed">
+  <div class="day-hdr"><div class="day-num">Day One</div><div class="day-name">Wednesday, May 20 — Arrival</div><div class="day-rule"></div></div>
+
+  <label class="check-item card">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-time">4:30 PM</div>
+      <div class="check-title">Land at MSY — Louis Armstrong International</div>
+      <div class="check-desc">Collect bags, grab Uber to Hotel St. Marie. Allow 30–40 min. Your body clock is 2 hours behind — you'll feel okay but travel-worn.</div>
+    </div>
+  </label>
+
+  <label class="check-item card">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-time">~5:30 PM</div>
+      <div class="check-title">Check In — Hotel St. Marie <span class="badge b-card">Card OK</span></div>
+      <div class="check-desc">Request a courtyard-facing room for quiet. Drop everything. Rest for a couple hours before heading out.
+        <div class="contact">
+          <div class="contact-row"><span>Address</span> 827 Toulouse Street, New Orleans, LA 70112</div>
+          <div class="contact-row"><span>Phone</span> (504) 561-8951 &nbsp;·&nbsp; Toll-free (888) 626-4812</div>
+          <div class="contact-row"><span>Web</span> hotelstmarie.com</div>
+        </div>
+      </div>
+    </div>
+  </label>
+
+  <label class="check-item card">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-time">~8:00 PM</div>
+      <div class="check-title">First Night Wander — Royal Street & Chartres</div>
+      <div class="check-desc">The quiet side of the Quarter. Wrought-iron balconies, gas lamps, centuries-old architecture. No agenda. Let the city wash over you.</div>
+    </div>
+  </label>
+
+  <label class="check-item card">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-time">~9:00 PM</div>
+      <div class="check-title">Café Du Monde — First Beignets <span class="badge b-cash">Cash Only</span></div>
+      <div class="check-desc">Open 24 hours. Three beignets buried in powdered sugar, café au lait mixed with chicory. Wear dark clothing or accept your fate. This is the welcome ceremony.
+        <div class="contact">
+          <div class="contact-row"><span>Address</span> 800 Decatur Street, New Orleans, LA 70116</div>
+          <div class="contact-row"><span>Phone</span> (504) 525-4544</div>
+          <div class="contact-row"><span>Web</span> cafedumonde.com</div>
+          <div class="contact-row"><span>Hours</span> Open 24 hours · Cash only at this location</div>
+        </div>
+      </div>
+    </div>
+  </label>
+</div>
+
+<!-- THURSDAY -->
+<div class="panel" id="panel-thu">
+  <div class="day-hdr"><div class="day-num">Day Two</div><div class="day-name">Thursday, May 21 — Toby's Birthday ✦</div><div class="day-rule"></div></div>
+
+  <label class="check-item card confirmed">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-time">11:00 AM</div>
+      <div class="check-title">Brennan's Restaurant <span class="badge b-confirmed">✓ Confirmed</span> <span class="badge b-card">Card OK</span></div>
+      <div class="check-desc">Order à la carte. The Bananas Foster is flambéed tableside — the original recipe, invented here. Tell your server it's Toby's birthday celebration when you arrive. Dressy casual. Budget ~$60–90+ per person before tip (20%+).
+        <div class="contact">
+          <div class="contact-row"><span>Address</span> 417 Royal Street, New Orleans, LA 70130</div>
+          <div class="contact-row"><span>Phone</span> (504) 525-9711</div>
+          <div class="contact-row"><span>Web</span> brennansneworleans.com</div>
+          <div class="contact-row"><span>Hours</span> Mon–Fri 9am–2pm, Sat–Sun 8am–2pm · Dinner nightly 6–10pm</div>
+        </div>
+      </div>
+    </div>
+  </label>
+
+  <label class="check-item card">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-time">~2:00 PM</div>
+      <div class="check-title">New Orleans Pharmacy Museum <span class="badge b-card">Card OK</span></div>
+      <div class="check-desc">America's first licensed apothecary (1823). 19th century surgical instruments, apothecary jars, voodoo potions, medical devices. Genuinely eerie. ~$5 entry, about an hour. Book a guided tour in advance for the full experience — guides are raved about.
+        <div class="contact">
+          <div class="contact-row"><span>Address</span> 514 Chartres Street, New Orleans, LA 70130</div>
+          <div class="contact-row"><span>Phone</span> (504) 490-6263</div>
+          <div class="contact-row"><span>Web</span> pharmacymuseum.org</div>
+          <div class="contact-row"><span>Hours</span> Tue–Sat 11am–4pm · Closed Sun & Mon</div>
+        </div>
+      </div>
+    </div>
+  </label>
+
+  <label class="check-item card">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-time">~3:30 PM</div>
+      <div class="check-title">Royal Street Browse + Pool</div>
+      <div class="check-desc">Antique shops, art galleries, the most atmospheric street in the Quarter. Back to the hotel pool to cool off and rest before the night out. Hydrate.</div>
+    </div>
+  </label>
+
+  <label class="check-item card spooky">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-time">~8:00 PM</div>
+      <div class="check-title">Dead of Night — Ghosts & Cemetery Bus Tour <span class="badge b-book">Book Now</span> <span class="badge b-card">Card OK</span></div>
+      <div class="check-desc">Air-conditioned bus through New Orleans' most haunted locations. Cemeteries at night, Esplanade Avenue ghost stories, local guide (ask for Christian — gets raved about constantly). ~2 hours, minimal walking. Perfect for Toby's knee. Arrive 20 min early at the pickup point. Tip your guide $5–10 per person in cash at the end.
+        <div class="contact">
+          <div class="contact-row"><span>Pickup</span> Washington Artillery Park, Decatur Street (across from the mule carriages, in front of the Tricentennial sign)</div>
+          <div class="contact-row"><span>Book via</span> Viator, TripAdvisor, or GetYourGuide — search "Dead of Night New Orleans"</div>
+          <div class="contact-row"><span>Operator</span> Haunted History Tours · hauntedhistorytours.com · (504) 861-2727</div>
+          <div class="contact-row"><span>Times</span> Nightly · family-friendly 7pm · adults only 9:30pm</div>
+        </div>
+      </div>
+    </div>
+  </label>
+</div>
+
+<!-- FRIDAY -->
+<div class="panel" id="panel-fri">
+  <div class="day-hdr"><div class="day-num">Day Three</div><div class="day-name">Friday, May 22 — Explore Day</div><div class="day-rule"></div></div>
+  <div class="loose-note">✦ &nbsp; Loose day — mix and match what sounds right. No strict order. &nbsp; ✦</div>
+
+  <div class="sec">The Big Drive</div>
+
+  <div class="causeway-box">
+    <div class="causeway-title">⚜ Lake Pontchartrain Causeway</div>
+    <div class="causeway-desc">The longest continuous bridge over water in the world — 24 miles across the lake. Halfway across you lose sight of land in every direction. It feels genuinely surreal. Pick up a rental car the morning of from a downtown location. Take I-10 west to Causeway Blvd in Metairie, then head north across to Mandeville. No stops or exits for the full 24 miles — fill up on gas and use the restroom before you get on.</div>
+    <div class="facts">
+      <div class="fact"><div class="fact-l">Length</div><div class="fact-v">23.83 miles</div></div>
+      <div class="fact"><div class="fact-l">Drive Time</div><div class="fact-v">~25–30 min</div></div>
+      <div class="fact"><div class="fact-l">Toll (southbound only)</div><div class="fact-v">$6 cash or card</div></div>
+      <div class="fact"><div class="fact-l">Avoid Peak Hours</div><div class="fact-v">3:30–6:30pm</div></div>
+    </div>
+  </div>
+
+  <label class="check-item card loose">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-title">Rent a Car <span class="badge b-book">Book Tonight</span></div>
+      <div class="check-desc">Book online tonight through Enterprise, Hertz, or your preferred app. Downtown New Orleans locations or MSY airport. May is peak season — don't wait until morning.</div>
+    </div>
+  </label>
+
+  <label class="check-item card loose">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-title">Drive the Causeway + Mandeville Lakefront</div>
+      <div class="check-desc">Cross north to Mandeville. Take a right on Monroe then left on Lakeshore Drive. Waterfront walking path along the lake. Rip's on the Lake (1917 Lakeshore Drive, Mandeville) is a good low-key local lunch spot with lake views. $6 toll coming back southbound — cash or card.</div>
+    </div>
+  </label>
+
+  <label class="check-item card loose">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-title">Abita Mystery House <span class="badge b-loose">Optional Detour</span> <span class="badge b-card">Card OK</span></div>
+      <div class="check-desc">Just east of Covington in Abita Springs — deeply weird roadside attraction. Animated clowns, bizarre folk art, miniature New Orleans scenes. Impossible to describe. Toby will love it. Follow with a stop at Abita Brewery next door.
+        <div class="contact">
+          <div class="contact-row"><span>Address</span> 22275 Highway 36, Abita Springs, LA 70420</div>
+          <div class="contact-row"><span>Phone</span> (985) 892-2624</div>
+          <div class="contact-row"><span>Web</span> abitamysteryhouse.com</div>
+        </div>
+      </div>
+    </div>
+  </label>
+
+  <div class="sec">Or Stay in the Quarter</div>
+
+  <label class="check-item card loose">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-title">French Market <span class="badge b-cash">Bring Cash</span></div>
+      <div class="check-desc">Open-air market along the river. Local vendors, food, art, Creole spices. Pick up Tony Chachere's or Slap Ya Mama seasoning to bring home. Mix of card and cash vendors.
+        <div class="contact">
+          <div class="contact-row"><span>Address</span> Decatur Street at St Philip, New Orleans, LA 70116</div>
+          <div class="contact-row"><span>Web</span> frenchmarket.org</div>
+          <div class="contact-row"><span>Hours</span> Daily 9am–6pm (some vendors vary)</div>
+        </div>
+      </div>
+    </div>
+  </label>
+
+  <label class="check-item card spooky loose">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-title">Historic Voodoo Museum <span class="badge b-card">Card OK</span></div>
+      <div class="check-desc">Dim, raw, atmospheric. Voodoo altars, ritual objects, Marie Laveau history. The only voodoo museum in the US, open since 1972. $10 adults. Book a guided tour with a staff member for the full story — worth it.
+        <div class="contact">
+          <div class="contact-row"><span>Address</span> 724 Dumaine Street, New Orleans, LA 70116</div>
+          <div class="contact-row"><span>Phone</span> (504) 680-0128</div>
+          <div class="contact-row"><span>Web</span> voodoomuseum.com</div>
+          <div class="contact-row"><span>Hours</span> Daily 10am–6pm (Fri–Sun until 7pm)</div>
+        </div>
+      </div>
+    </div>
+  </label>
+
+  <label class="check-item card loose">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-title">Preservation Hall — Live Jazz <span class="badge b-card">Card OK</span></div>
+      <div class="check-desc">The most legendary jazz venue in New Orleans. Small intimate room, acoustic, no frills — just world-class musicians who have played here for decades. Buy tickets in advance online. No drinks inside — grab one from a nearby bar to carry in.
+        <div class="contact">
+          <div class="contact-row"><span>Address</span> 726 St Peter Street, New Orleans, LA 70116</div>
+          <div class="contact-row"><span>Phone</span> (504) 522-2841</div>
+          <div class="contact-row"><span>Web</span> preservationhall.com</div>
+          <div class="contact-row"><span>Hours</span> Shows nightly at 8, 9 & 10pm · Doors open 5pm</div>
+        </div>
+      </div>
+    </div>
+  </label>
+
+  <label class="check-item card loose">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-title">Frenchmen Street — Evening Jazz <span class="badge b-cash">Tip bands in cash</span></div>
+      <div class="check-desc">One block off the Quarter. Locals, not tourists. Live music spilling from multiple venues onto the street. No cover at most spots. Walk in, listen, move on. Tip $1–5 when the bucket comes around — they make their living this way.</div>
+    </div>
+  </label>
+</div>
+
+<!-- SATURDAY -->
+<div class="panel" id="panel-sat">
+  <div class="day-hdr"><div class="day-num">Day Four</div><div class="day-name">Saturday, May 23 — Departure</div><div class="day-rule"></div></div>
+  <div class="loose-note">MSY departs 4:50 PM · MSY → DEN → PDX · Arrives Portland 10:05 PM</div>
+
+  <label class="check-item card">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-time">Morning</div>
+      <div class="check-title">Slow Morning</div>
+      <div class="check-desc">Check out, store luggage at the hotel front desk. One last walk. One last beignet. Don't rush.</div>
+    </div>
+  </label>
+
+  <label class="check-item card loose">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-time">Morning</div>
+      <div class="check-title">Stanley — Last Breakfast <span class="badge b-card">Card OK</span> <span class="badge b-loose">Optional</span></div>
+      <div class="check-desc">Right on Jackson Square. Watch the city wake up. Order the Bananas Foster French Toast or Eggs Benedict Po'Boy.
+        <div class="contact">
+          <div class="contact-row"><span>Address</span> 547 St Ann Street, New Orleans, LA 70116</div>
+          <div class="contact-row"><span>Phone</span> (504) 587-0093</div>
+          <div class="contact-row"><span>Web</span> stanleyrestaurant.com</div>
+          <div class="contact-row"><span>Hours</span> Daily 7am–9pm</div>
+        </div>
+      </div>
+    </div>
+  </label>
+
+  <label class="check-item card">
+    <input type="checkbox" onchange="updateProgress()">
+    <div class="check-box"></div>
+    <div class="check-content">
+      <div class="check-time">2:30 PM</div>
+      <div class="check-title">Head to MSY</div>
+      <div class="check-desc">Allow 30–40 min for Uber plus check-in and security. Don't cut it close — late May Saturday afternoon traffic is unpredictable.</div>
+    </div>
+  </label>
+</div>
+
+<!-- FOOD -->
+<div class="panel" id="panel-eat">
+  <div class="day-hdr"><div class="day-num">Food</div><div class="day-name">Where to Eat</div><div class="day-rule"></div></div>
+
+  <div class="pay-legend">
+    <div class="pay-legend-title">Payment Key</div>
+    <span class="badge b-card">Card OK</span>
+    <span class="badge b-cash">Cash Only / Preferred</span>
+    <span class="badge b-free">Free</span>
+  </div>
+
+  <p style="font-size:0.77rem;color:var(--cream-d);margin-bottom:16px;line-height:1.7;font-style:italic;">Both on semaglutide — order small, share where you can, don't feel obligated to finish. New Orleans food is very rich.</p>
+
+  <div class="sec">Special Occasion</div>
+
+  <div class="resto">
+    <div class="resto-name">Brennan's <span class="badge b-confirmed">✓ Thu 11am</span></div>
+    <div class="resto-pay"><span class="badge b-card">Card OK</span></div>
+    <div class="resto-desc">The New Orleans icon since 1946. Eight dining rooms, tableside Bananas Foster, birthplace of the flambé dessert. Order à la carte. Tip 20%+.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Address</span> 417 Royal Street, New Orleans, LA 70130</div>
+      <div class="contact-row"><span>Phone</span> (504) 525-9711 &nbsp;·&nbsp; brennansneworleans.com</div>
+    </div>
+    <div class="menu-items">
+      <div class="menu-label">✦ &nbsp; Order This</div>
+      <div class="menu-item"><strong>Bananas Foster</strong><span> — Flambéed tableside. The original. Non-negotiable.</span></div>
+      <div class="menu-item"><strong>Turtle Soup</strong><span> — Rich, dark, sherry-finished. A New Orleans classic.</span></div>
+      <div class="menu-item"><strong>Soft-Shell Crab</strong><span> — Peak season in May. Order it if it's on the menu.</span></div>
+      <div class="menu-item"><strong>Summer Vegetable Omelet</strong><span> — Lighter option, beautifully done.</span></div>
+      <div class="menu-item"><strong>Sazerac cocktail</strong><span> — The original New Orleans cocktail. Rye, bitters, absinthe rinse.</span></div>
+    </div>
+  </div>
+
+  <div class="resto">
+    <div class="resto-name">Broussard's</div>
+    <div class="resto-pay"><span class="badge b-card">Card OK</span></div>
+    <div class="resto-desc">Old-school fine dining since 1920. Stunning wisteria courtyard — said to have the oldest wisteria tree in the Quarter. Happy Hour $5 cocktails Mon & Thu–Sat 3–6pm. Make a reservation. Closed Tue–Wed.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Address</span> 819 Conti Street, New Orleans, LA 70112</div>
+      <div class="contact-row"><span>Phone</span> (504) 581-3866 &nbsp;·&nbsp; broussards.com</div>
+    </div>
+    <div class="menu-items">
+      <div class="menu-label">✦ &nbsp; Order This</div>
+      <div class="menu-item"><strong>Oysters Broussard</strong><span> — Fried oysters, thick-cut bacon, creamy spinach. Remarkable.</span></div>
+      <div class="menu-item"><strong>Bronzed Redfish</strong><span> — Buttery and perfect. Non-negotiable entree.</span></div>
+      <div class="menu-item"><strong>Pear Galette</strong><span> — Gingery, cinnamony. Worth saving room for.</span></div>
+    </div>
+  </div>
+
+  <div class="sec">Breakfast & Brunch</div>
+
+  <div class="resto">
+    <div class="resto-name">Stanley</div>
+    <div class="resto-pay"><span class="badge b-card">Card OK</span></div>
+    <div class="resto-desc">Right on Jackson Square. Not a tourist trap — locals eat here. Great for a final New Orleans morning watching the city wake up.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Address</span> 547 St Ann Street, New Orleans, LA 70116</div>
+      <div class="contact-row"><span>Phone</span> (504) 587-0093 &nbsp;·&nbsp; stanleyrestaurant.com</div>
+    </div>
+    <div class="menu-items">
+      <div class="menu-label">✦ &nbsp; Order This</div>
+      <div class="menu-item"><strong>Bananas Foster French Toast</strong><span> — Yes, again. Worth it.</span></div>
+      <div class="menu-item"><strong>Eggs Benedict Po'Boy</strong><span> — A very New Orleans concept, very well executed.</span></div>
+      <div class="menu-item"><strong>Seafood Gumbo</strong><span> — One of the better versions in the Quarter.</span></div>
+    </div>
+  </div>
+
+  <div class="resto">
+    <div class="resto-name">Café Beignet</div>
+    <div class="resto-pay"><span class="badge b-card">Card OK</span></div>
+    <div class="resto-desc">Less touristy than Café Du Monde. Better for lingering. Courtyard seating. Good coffee.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Address</span> 334 Royal Street, New Orleans, LA 70130</div>
+      <div class="contact-row"><span>Phone</span> (504) 524-5530 &nbsp;·&nbsp; cafebeignet.com</div>
+    </div>
+  </div>
+
+  <div class="sec">Casual & Local</div>
+
+  <div class="resto">
+    <div class="resto-name">Killer Po'Boys</div>
+    <div class="resto-pay"><span class="badge b-card">Card OK</span></div>
+    <div class="resto-desc">Michelin-recognized. Creative po'boys far beyond the standard. Tiny counter inside Erin Rose bar. Order at the window.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Address</span> 219 Dauphine Street, New Orleans, LA 70112</div>
+      <div class="contact-row"><span>Phone</span> (504) 439-7445 &nbsp;·&nbsp; killerpoboys.com</div>
+      <div class="contact-row"><span>Hours</span> Wed–Mon 11am–8pm · Closed Tue</div>
+    </div>
+    <div class="menu-items">
+      <div class="menu-label">✦ &nbsp; Order This</div>
+      <div class="menu-item"><strong>BBQ Shrimp Po'Boy</strong><span> — Rich buttery sauce, perfectly messy.</span></div>
+      <div class="menu-item"><strong>Dark Roast Debris Po'Boy</strong><span> — Slow-roasted beef. A New Orleans classic done right.</span></div>
+    </div>
+  </div>
+
+  <div class="resto">
+    <div class="resto-name">Port of Call</div>
+    <div class="resto-pay"><span class="badge b-card">Card OK</span></div>
+    <div class="resto-desc">New Orleans institution since 1963. Massive burgers, enormous Monsoon cocktail (split it). Long waits — go early or late.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Address</span> 838 Esplanade Avenue, New Orleans, LA 70116</div>
+      <div class="contact-row"><span>Phone</span> (504) 523-0120</div>
+      <div class="contact-row"><span>Hours</span> Mon & Wed–Thu 11am–10pm · Fri–Sat 11am–midnight · Closed Tue</div>
+    </div>
+    <div class="menu-items">
+      <div class="menu-label">✦ &nbsp; Order This</div>
+      <div class="menu-item"><strong>Mushroom Cheeseburger + Baked Potato</strong><span> — The move. Both together.</span></div>
+      <div class="menu-item"><strong>Monsoon cocktail</strong><span> — Split it. This is not a warning to ignore.</span></div>
+    </div>
+  </div>
+
+  <div class="sec">Sweet Tooth — For Toby</div>
+
+  <div class="resto">
+    <div class="resto-name">Loretta's Authentic Pralines</div>
+    <div class="resto-pay"><span class="badge b-card">Card OK</span><span class="badge b-cash">Cash OK</span></div>
+    <div class="resto-desc">Real New Orleans pralines made fresh. Also makes crab beignets — savory, crispy, incredible. One of the most beloved spots in the French Market.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Address</span> 1100 N Peters Street, Stall 9, New Orleans, LA 70116 (French Market)</div>
+      <div class="contact-row"><span>Phone</span> (504) 323-8350 &nbsp;·&nbsp; lorettaspralines.com</div>
+      <div class="contact-row"><span>Hours</span> Mon–Tue closed · Wed–Fri 9am–4pm · Sat 9am–4pm</div>
+    </div>
+    <div class="menu-items">
+      <div class="menu-label">✦ &nbsp; Order This</div>
+      <div class="menu-item"><strong>Classic Pecan Pralines</strong><span> — Get a few varieties. Take some home.</span></div>
+      <div class="menu-item"><strong>Crab Beignets</strong><span> — Savory version of the beignet. Toby will love these.</span></div>
+    </div>
+  </div>
+
+  <div class="sec">Late Night</div>
+
+  <div class="resto">
+    <div class="resto-name">Verti Marte</div>
+    <div class="resto-pay"><span class="badge b-cash">Cash Only</span></div>
+    <div class="resto-desc">Open 24 hours. Deli counter institution. No atmosphere — just good cheap food at midnight. ATM on site.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Address</span> 1201 Royal Street, New Orleans, LA 70116</div>
+      <div class="contact-row"><span>Phone</span> (504) 525-4767</div>
+      <div class="contact-row"><span>Hours</span> Open 24 hours · Cash only</div>
+    </div>
+    <div class="menu-items">
+      <div class="menu-label">✦ &nbsp; Order This</div>
+      <div class="menu-item"><strong>All That Jazz Po'Boy</strong><span> — The best-seller. Order it.</span></div>
+      <div class="menu-item"><strong>Spicy Muffaletta</strong><span> — Not on the tourist radar. Get it.</span></div>
+    </div>
+  </div>
+
+  <div class="resto">
+    <div class="resto-name">Café Du Monde</div>
+    <div class="resto-pay"><span class="badge b-cash">Cash Only</span></div>
+    <div class="resto-desc">Open 24 hours. Three beignets and café au lait. That is the entire menu. Come at least twice.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Address</span> 800 Decatur Street, New Orleans, LA 70116</div>
+      <div class="contact-row"><span>Phone</span> (504) 525-4544 &nbsp;·&nbsp; cafedumonde.com</div>
+    </div>
+  </div>
+</div>
+
+<!-- THINGS TO DO -->
+<div class="panel" id="panel-see">
+  <div class="day-hdr"><div class="day-num">Explore</div><div class="day-name">Things to Do</div><div class="day-rule"></div></div>
+
+  <div class="sec">Spooky & Supernatural</div>
+
+  <div class="attract">
+    <div class="attract-name">Dead of Night — Ghosts & Cemetery Bus Tour <span class="badge b-book">Book Now</span> <span class="badge b-card">Card OK</span></div>
+    <div class="attract-sub">~2 hours · Air conditioned bus · Minimal walking · Nightly</div>
+    <div class="attract-desc">The pick for Toby's birthday night. Air-conditioned bus to haunted cemeteries and locations along Esplanade Avenue. Guides are passionate locals — ask for Christian. Arrive 20 min early. Tip $5–10 per person in cash.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Pickup</span> Washington Artillery Park, Decatur Street</div>
+      <div class="contact-row"><span>Operator</span> Haunted History Tours · (504) 861-2727 · hauntedhistorytours.com</div>
+      <div class="contact-row"><span>Book</span> Via Viator, TripAdvisor, or GetYourGuide</div>
+      <div class="contact-row"><span>Times</span> 7pm (family) · 9:30pm (adults only)</div>
+    </div>
+  </div>
+
+  <div class="attract">
+    <div class="attract-name">New Orleans Pharmacy Museum <span class="badge b-card">Card OK</span></div>
+    <div class="attract-sub">514 Chartres Street · ~$5 entry · Tue–Sat 11am–4pm</div>
+    <div class="attract-desc">America's first licensed apothecary (1823). 19th century surgical instruments, voodoo potions, leeching equipment. Genuinely eerie and perpetually under-visited. Book a guided tour in advance for the best experience.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Phone</span> (504) 490-6263 &nbsp;·&nbsp; pharmacymuseum.org</div>
+    </div>
+  </div>
+
+  <div class="attract">
+    <div class="attract-name">Historic Voodoo Museum <span class="badge b-card">Card OK</span></div>
+    <div class="attract-sub">724 Dumaine Street · $10 adults · Daily 10am–6pm</div>
+    <div class="attract-desc">The only voodoo museum in the US, open since 1972. Voodoo altars, ritual objects, Marie Laveau history. Raw and real. Do the guided tour with a staff member — completely worth it.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Phone</span> (504) 680-0128 &nbsp;·&nbsp; voodoomuseum.com</div>
+    </div>
+  </div>
+
+  <div class="attract">
+    <div class="attract-name">Bloody Mary's Haunted Museum & Ghost Hunt <span class="badge b-card">Card OK</span></div>
+    <div class="attract-sub">Reserve ahead · bloodymarystours.com</div>
+    <div class="attract-desc">200-year-old haunted house with ghost hunting equipment, seances, psychic readings, voodoo doll making. Far more immersive than any walking tour. Indoors — a good escape from afternoon heat.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Web</span> bloodymarystours.com</div>
+    </div>
+  </div>
+
+  <div class="attract">
+    <div class="attract-name">LaLaurie Mansion <span class="badge b-free">Free to view</span></div>
+    <div class="attract-sub">1140 Royal Street · Exterior only</div>
+    <div class="attract-desc">The most notorious haunted house in New Orleans. Site of horrific atrocities in the 1830s. You cannot go inside but the bus tour brings you here. Stand outside at night and feel the weight of the place. Nicholas Cage once owned it.</div>
+  </div>
+
+  <div class="sec">History & Culture</div>
+
+  <div class="attract">
+    <div class="attract-name">Jackson Square <span class="badge b-free">Free</span></div>
+    <div class="attract-sub">Decatur & St Ann Street · Always open</div>
+    <div class="attract-desc">The heart of the Quarter. St. Louis Cathedral backdrop, street artists, tarot readers, musicians. Beautiful at any hour but magical in the early morning before the crowds arrive.</div>
+  </div>
+
+  <div class="attract">
+    <div class="attract-name">St. Louis Cathedral <span class="badge b-free">Free</span></div>
+    <div class="attract-sub">615 Pere Antoine Alley, Jackson Square · Open daily</div>
+    <div class="attract-desc">The oldest continuously operating cathedral in the US, built 1718. Free admission. Photography allowed inside. Go in and look up at the ceiling. Silence your phone.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Phone</span> (504) 525-9585 &nbsp;·&nbsp; stlouiscathedral.org</div>
+    </div>
+  </div>
+
+  <div class="attract">
+    <div class="attract-name">The Carousel Bar — Hotel Monteleone <span class="badge b-card">Card OK</span></div>
+    <div class="attract-sub">214 Royal Street · Open daily</div>
+    <div class="attract-desc">The only revolving bar in New Orleans, slowly spinning since 1949. Hemingway, Tennessee Williams, and Truman Capote all drank here. Order a Vieux Carré cocktail — invented at this bar.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Phone</span> (504) 523-3341 &nbsp;·&nbsp; hotelmonteleone.com</div>
+    </div>
+  </div>
+
+  <div class="attract">
+    <div class="attract-name">Preservation Hall <span class="badge b-card">Card OK</span></div>
+    <div class="attract-sub">726 St Peter Street · Shows 8, 9 & 10pm nightly · ~$20–35</div>
+    <div class="attract-desc">The most legendary jazz venue in New Orleans. Small room, acoustic, decades of living tradition. Buy tickets online in advance. No drinks inside — carry one in from a nearby bar.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Phone</span> (504) 522-2841 &nbsp;·&nbsp; preservationhall.com</div>
+    </div>
+  </div>
+
+  <div class="attract">
+    <div class="attract-name">French Market <span class="badge b-cash">Bring Cash</span></div>
+    <div class="attract-sub">Decatur Street · Daily 9am–6pm</div>
+    <div class="attract-desc">Historic open-air market along the river. Local vendors, food stalls, Creole spices. Some vendors card, some cash only — bring both.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Web</span> frenchmarket.org</div>
+    </div>
+  </div>
+
+  <div class="sec">Unique & Unexpected</div>
+
+  <div class="attract">
+    <div class="attract-name">Pirate's Alley & Faulkner House Books <span class="badge b-free">Free to walk</span></div>
+    <div class="attract-sub">Pirate's Alley off Jackson Square</div>
+    <div class="attract-desc">Narrow atmospheric alley next to the Cathedral. William Faulkner wrote his first novel in what is now a bookshop. One of the most photographed spots in the city.</div>
+  </div>
+
+  <div class="attract">
+    <div class="attract-name">The Old Ursuline Convent <span class="badge b-card">Card OK</span></div>
+    <div class="attract-sub">1100 Chartres Street · Tours available · ~$10</div>
+    <div class="attract-desc">The oldest surviving building in the Mississippi River Valley, built 1752. Vampire legends, coffin-shaped windows, centuries of dark history. Right up Toby's alley.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Phone</span> (504) 529-3040 &nbsp;·&nbsp; oldursulineconventnola.com</div>
+    </div>
+  </div>
+
+  <div class="attract">
+    <div class="attract-name">Abita Mystery House <span class="badge b-card">Card OK</span></div>
+    <div class="attract-sub">22275 Highway 36, Abita Springs, LA · ~$5 · North Shore day trip</div>
+    <div class="attract-desc">The most gloriously weird roadside attraction in Louisiana. Animated clowns, bizarre dioramas, folk art collections, miniature New Orleans scenes. Toby will love this unreservedly.</div>
+    <div class="contact">
+      <div class="contact-row"><span>Phone</span> (985) 892-2624 &nbsp;·&nbsp; abitamysteryhouse.com</div>
+    </div>
+  </div>
+</div>
+
+<!-- TIPS -->
+<div class="panel" id="panel-tips">
+  <div class="day-hdr"><div class="day-num">Know Before You Go</div><div class="day-name">Tips & Payment Guide</div><div class="day-rule"></div></div>
+
+  <div class="sec">Tipping Guide</div>
+
+  <table class="tip-table">
+    <tr><th>Where</th><th>How Much</th><th>Cash or Card?</th></tr>
+    <tr><td>Sit-down restaurants</td><td>18–20% minimum. 20–25% for good service. New Orleans service industry relies heavily on tips.</td><td>Either — add to card bill or leave cash</td></tr>
+    <tr><td>Bars</td><td>$1–2 per simple drink. $2+ for cocktails.</td><td>Mostly cash — many bars are cash only</td></tr>
+    <tr><td>Bus tour guide</td><td>$5–10 per person. They earn much of their income from tips.</td><td>Cash — bring small bills</td></tr>
+    <tr><td>Street musicians</td><td>$1–5 when the tip bucket comes around. If you stop and listen, tip.</td><td>Cash — keep $1s and $5s on you</td></tr>
+    <tr><td>Uber/Lyft</td><td>Not mandatory but appreciated.</td><td>App</td></tr>
+    <tr><td>Hotel housekeeping</td><td>$2–5 per night, left on the pillow.</td><td>Cash</td></tr>
+    <tr><td>Valet</td><td>$3–5 drop off, $3–5 pickup.</td><td>Cash</td></tr>
+    <tr><td>Concierge</td><td>Not required for basic help. $20 if they score a sold-out reservation.</td><td>Cash</td></tr>
+  </table>
+
+  <div class="sec">Cash vs. Card</div>
+
+  <div class="tip"><div class="tip-i">💳</div><div><strong>Most restaurants take cards.</strong> Sit-down spots almost universally accept Visa, Mastercard, and Amex. Google Pay works at most modern terminals.</div></div>
+  <div class="tip"><div class="tip-i">💵</div><div><strong>Keep $60–100 cash on you at all times.</strong> Café Du Monde, Verti Marte, and many bars are cash only. Get cash at Rouses grocery store (Royal & St Peter) using debit card cashback — no ATM fee.</div></div>
+  <div class="tip"><div class="tip-i">🍺</div><div><strong>Bars are often cash only</strong> — especially the classic dives. Harry's Corner, Chart Room, and similar spots have ATMs on site. Have cash before walking into any unknown bar.</div></div>
+  <div class="tip"><div class="tip-i">🥤</div><div><strong>Open container laws are nonexistent in the Quarter.</strong> Take your drink outside in a plastic cup — no glass on the street. Most bars will swap your glass for a go-cup automatically.</div></div>
+
+  <div class="sec">Bookings Still Needed</div>
+
+  <div class="tip"><div class="tip-i">👻</div><div><strong>Dead of Night Bus Tour</strong> — Book on Viator or TripAdvisor. Search "Dead of Night New Orleans Cemetery Bus Tour." Sells out — book this week. · Operator: (504) 861-2727 · hauntedhistorytours.com</div></div>
+  <div class="tip"><div class="tip-i">🍽️</div><div><strong>Broussard's</strong> — If you want a nice Friday dinner, book a reservation online at broussards.com or call (504) 581-3866. Closed Tue–Wed so Thursday or Friday dinner only.</div></div>
+  <div class="tip"><div class="tip-i">🚗</div><div><strong>Rental car</strong> — Book by Thursday night for Friday pickup. Enterprise, Hertz, or your app of choice.</div></div>
+  <div class="tip"><div class="tip-i">🏛️</div><div><strong>Pharmacy Museum guided tour</strong> — Book in advance at pharmacymuseum.org. Guided tours fill up quickly, especially in May.</div></div>
+
+  <div class="sec">Health & Comfort</div>
+
+  <div class="tip"><div class="tip-i">💧</div><div><strong>Hydrate constantly.</strong> Both on semaglutide which reduces thirst signals. In 90°F+ humidity you need more water than you think. Carry a bottle. Electrolyte packets worth packing.</div></div>
+  <div class="tip"><div class="tip-i">🌡️</div><div><strong>Heat strategy:</strong> Active sightseeing in the morning. Pool or indoors midday. Out again in the evening when it cools slightly. Late May averages 85–95°F with heavy humidity.</div></div>
+  <div class="tip"><div class="tip-i">🌧️</div><div><strong>Afternoon thunderstorms</strong> are nearly guaranteed in late May. They roll in fast and clear fast. Pack a compact umbrella or poncho.</div></div>
+  <div class="tip"><div class="tip-i">🦟</div><div><strong>Mosquitoes are real.</strong> Peak season in May. Bring bug spray. Any time near the river or in a courtyard at dusk, you'll feel them.</div></div>
+  <div class="tip"><div class="tip-i">👟</div><div><strong>Cobblestone is uneven.</strong> Comfortable shoes for both of you. For Toby's knee specifically — good supportive footwear is more important than style on the walking days.</div></div>
+
+  <div class="sec">Toby</div>
+
+  <div class="tip"><div class="tip-i">👗</div><div><strong>Her aesthetic is an asset here.</strong> Victorian gothic reads as intentional and celebrated in New Orleans. She may get stopped for photos on the street. Sleeveless is absolutely fine for women — no dress code issue whatsoever.</div></div>
+  <div class="tip"><div class="tip-i">☀️</div><div><strong>Heat + dark clothing:</strong> The most breathable versions of her aesthetic are her best friend. Loose, dark, natural fabrics. A portable handheld fan is worth throwing in the bag — small ones are cheap and make a real difference.</div></div>
+  <div class="tip"><div class="tip-i">🦵</div><div><strong>Toby's knee:</strong> The Dead of Night bus tour is the right call — minimal walking, air conditioned, seated most of the time. Avoid long cobblestone walks in the heat of the day. Evening activities after resting are easier.</div></div>
+  <div class="tip"><div class="tip-i">🎂</div><div><strong>Tell every restaurant it's her birthday.</strong> New Orleans hospitality is genuine. Even though her actual birthday was May 18, nobody cares — they will celebrate with you every single time.</div></div>
+
+  <div class="sec">Safety & Logistics</div>
+
+  <div class="tip"><div class="tip-i">👜</div><div><strong>Crossbody bag with a zipper.</strong> Crowded areas attract pickpockets. Keep phone and cards on your body, not in a tote or open bag.</div></div>
+  <div class="tip"><div class="tip-i">🚕</div><div><strong>Uber/Lyft surge</strong> hits hard on weekend nights. After 10pm expect to wait and pay more. Walk when you can — the Quarter is very walkable.</div></div>
+  <div class="tip"><div class="tip-i">🏨</div><div><strong>No room service at St. Marie.</strong> DoorDash and Uber Eats work great in the Quarter for late-night food. On-site restaurant and bar for everything else.</div></div>
+  <div class="tip"><div class="tip-i">🌿</div><div><strong>Powdered sugar warning.</strong> Beignets will cover you in white powder. Wear light colors for Café Du Monde or accept it as a New Orleans rite of passage.</div></div>
+  <div class="tip"><div class="tip-i">🌉</div><div><strong>Causeway tip:</strong> No stops or exits for 24 miles. Fill up on gas and use the restroom before you get on. $6 toll southbound only — cash or card.</div></div>
+</div>
+
+</div>
+
+<script>
+function showTab(id,el){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  el.classList.add('active');
+}
+function updateProgress(){
+  const all=document.querySelectorAll('input[type="checkbox"]');
+  const checked=document.querySelectorAll('input[type="checkbox"]:checked');
+  const pct=all.length?(checked.length/all.length*100):0;
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-count').textContent=checked.length+' of '+all.length+' checked';
+}
+updateProgress();
+</script>
+</body>
+</html>
